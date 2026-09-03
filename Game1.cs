@@ -15,7 +15,7 @@ public class Game1 : Game
 
     private int gemsLeft;
 
-    // private SpriteFont bangers;
+    private SpriteFont bangers;
 
     public Game1()
     {
@@ -54,7 +54,7 @@ public class Game1 : Game
         {
             gem.LoadContent(Content);
         }
-        // bangers = Content.Load<SpriteFont>("bangers");
+        bangers = Content.Load<SpriteFont>("bangers");
     }
 
     protected override void Update(GameTime gameTime)
@@ -64,6 +64,17 @@ public class Game1 : Game
 
         // TODO: Add your update logic here
         jet.Update(gameTime);
+
+        jet.Color = Color.White;
+        foreach(var gem in gems)
+        {
+            if (!gem.Collected && gem.Bounds.CollidesWith(jet.Bounds))
+            {
+                jet.Color = Color.Gold;
+                gem.Collected = true;
+                gemsLeft--;
+            }
+        }
 
         base.Update(gameTime);
     }
@@ -75,9 +86,8 @@ public class Game1 : Game
         
         _spriteBatch.Begin();
         foreach (var gem in gems) gem.Draw(gameTime, _spriteBatch);
-        // _spriteBatch.DrawString(bangers, $"Gems left: {gemsLeft}", new Vector2(2,2), Color.Gold);
-        // _spriteBatch.DrawString(bangers, $"{gameTime.TotalGameTime:c}", new Vector2(2,2), Color.Gold);
-        
+        jet.Draw(gameTime, _spriteBatch);
+        _spriteBatch.DrawString(bangers, $"Gems left: {gemsLeft}", new Vector2(2,2), Color.Black);
 
     
         _spriteBatch.End();

@@ -20,12 +20,14 @@ namespace Game_Project_0
 
         private Texture2D texture;
 
+        private Texture2D hitbox;
+
         private Vector2 position = new Vector2(200, 200);
 
         private bool flipped;
         
 
-        private BoudningRectangle bounds = new BoudningRectangle(new Vector2(200-16, 200-16), 32, 32);
+        private BoudningRectangle bounds = new BoudningRectangle(new Vector2(200-32, 200-32), 64, 64);
 
         /// <summary>
         /// The boudning volume of the sprite
@@ -43,7 +45,8 @@ namespace Game_Project_0
         /// <param name="content">The ContentManager to load with</param>
         public void LoadContent(ContentManager content)
         {
-            texture = content.Load<Texture2D>("DamageOrb");//CHANGE LATER
+            texture = content.Load<Texture2D>("Jet");
+            hitbox = content.Load<Texture2D>("64x64HitBox");
         }
 
         /// <summary>
@@ -75,8 +78,8 @@ namespace Game_Project_0
             }
 
             // update the bounding box center
-            bounds.X = position.X -16;
-            bounds.Y = position.Y -16;
+            bounds.X = position.X - 32;
+            bounds.Y = position.Y - 32;
         }
 
         /// <summary>
@@ -87,7 +90,10 @@ namespace Game_Project_0
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             SpriteEffects spriteEffects = (flipped) ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-            spriteBatch.Draw(texture, position, null, Color, 0, new Vector2(64, 64), 0.25f, spriteEffects, 0);
+            
+            spriteBatch.Draw(texture, position, null, Color, 0, new Vector2(32, 32), 1f, spriteEffects, 0);
+            Rectangle rect = new ((int)bounds.X, (int)bounds.Y, (int)bounds.Width, (int)bounds.Height);
+            spriteBatch.Draw(hitbox, rect, Color.White);
         }
     }
 }
