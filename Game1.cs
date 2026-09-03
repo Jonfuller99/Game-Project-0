@@ -9,9 +9,13 @@ public class Game1 : Game
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
 
+    private JetSprite jet;
+
     private GemSprite [] gems;
 
     private int gemsLeft;
+
+    // private SpriteFont bangers;
 
     public Game1()
     {
@@ -23,6 +27,8 @@ public class Game1 : Game
     protected override void Initialize()
     {
         // TODO: Add your initialization logic here
+        jet = new();
+
         System.Random rand = new System.Random();
         gems = new GemSprite[]
         {
@@ -40,12 +46,15 @@ public class Game1 : Game
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
-
         // TODO: use this.Content to load your game content here
+
+
+        jet.LoadContent(Content);
         foreach(var gem in gems)
         {
             gem.LoadContent(Content);
         }
+        // bangers = Content.Load<SpriteFont>("bangers");
     }
 
     protected override void Update(GameTime gameTime)
@@ -54,20 +63,24 @@ public class Game1 : Game
             Exit();
 
         // TODO: Add your update logic here
+        jet.Update(gameTime);
 
         base.Update(gameTime);
     }
 
     protected override void Draw(GameTime gameTime)
     {
-        GraphicsDevice.Clear(Color.CornflowerBlue);
-            // TODO: Add your drawing code here
-            _spriteBatch.Begin();
-            foreach (var gem in gems) gem.Draw(gameTime, _spriteBatch);
-            // _spriteBatch.DrawString(spriteFont, $"Gems left: {gemsLeft}", new Vector2(2,2), Color.Gold);
-            _spriteBatch.End();
+        GraphicsDevice.Clear(Color.LightGray);
+        // TODO: Add your drawing code here
+        
+        _spriteBatch.Begin();
+        foreach (var gem in gems) gem.Draw(gameTime, _spriteBatch);
+        // _spriteBatch.DrawString(bangers, $"Gems left: {gemsLeft}", new Vector2(2,2), Color.Gold);
+        // _spriteBatch.DrawString(bangers, $"{gameTime.TotalGameTime:c}", new Vector2(2,2), Color.Gold);
+        
 
-            base.Draw(gameTime);
+    
+        _spriteBatch.End();
 
         base.Draw(gameTime);
     }

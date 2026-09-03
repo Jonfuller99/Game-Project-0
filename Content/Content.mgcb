@@ -26,3 +26,11 @@
 /processorParam:Version=3.8.5.1
 /build:BlueGem.png
 
+#begin File.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/processorParam:Version=3.8.5.1
+/build:File.spritefont;bangers.spritefont
+
