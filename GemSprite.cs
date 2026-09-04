@@ -41,7 +41,7 @@ namespace Game_Project_0
         public GemSprite(Vector2 position)
         {
             this.position = position;
-            this.bounds = new BoudningCircle(position - new Vector2(-8, -8), 8);
+            this.bounds = new BoudningCircle(position - new Vector2(-16, -16), 16);
         }
 
         /// <summary>
