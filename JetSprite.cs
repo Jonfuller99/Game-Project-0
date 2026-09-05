@@ -17,17 +17,25 @@ namespace Game_Project_0
         private GamePadState gamePadState;
 
         private KeyboardState keyboardState;
+        protected KeyboardState priorKeyboardState;
 
         private Texture2D texture;
 
         private Texture2D hitbox;
 
-        private Vector2 position = new Vector2(200, 200);
 
         private bool flipped;
+
+        private Direction direction;
+
+        private int borderMinX = 0;
+        private int borderMinY = 0;
+        private int borderMaxX = 800;
+        private int borderMaxY = 480;
+        private Vector2 position = new Vector2(50, 430);
         
 
-        private BoudningRectangle bounds = new BoudningRectangle(new Vector2(200-32, 200-32), 64, 64);
+        private BoudningRectangle bounds = new BoudningRectangle(new Vector2(50-32, 430-32), 64, 64);
 
         /// <summary>
         /// The boudning volume of the sprite
@@ -49,6 +57,12 @@ namespace Game_Project_0
             hitbox = content.Load<Texture2D>("64x64HitBox");
         }
 
+        public void Reset(ContentManager content)
+        {
+            LoadContent(content);
+            position = new Vector2(borderMinX + 50, borderMaxY - 50);
+        }
+
         /// <summary>
         /// Updates the sprite's position based on user input
         /// </summary>
@@ -64,22 +78,63 @@ namespace Game_Project_0
             if (gamePadState.ThumbSticks.Left.X > 0) flipped = false;
 
             // Apply keyboard movement
-            if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.W)) position += new Vector2(0, -5);
-            if (keyboardState.IsKeyDown(Keys.Down) || keyboardState.IsKeyDown(Keys.S)) position += new Vector2(0, 5);
+            if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.W))
+            {
+                position += new Vector2(0, -5);
+                direction = Direction.Up;
+                
+            } 
+            if (keyboardState.IsKeyDown(Keys.Down) || keyboardState.IsKeyDown(Keys.S))
+            {
+                 position += new Vector2(0, 5);
+                direction = Direction.Down;
+                
+            } 
             if (keyboardState.IsKeyDown(Keys.Left) || keyboardState.IsKeyDown(Keys.A))
             { 
                 position += new Vector2(-5, 0);
                 flipped = true;
+                direction = Direction.Left;
+
             }
             if (keyboardState.IsKeyDown(Keys.Right) || keyboardState.IsKeyDown(Keys.D))
             {
                 position += new Vector2(5, 0);
                 flipped = false;
+                direction = Direction.Right;
+
             }
+
+            if (keyboardState.IsKeyDown(Keys.Space) && priorKeyboardState.IsKeyUp(Keys.Space))
+            {
+                switch (direction)
+                {
+                    case Direction.Up:
+                         position += new Vector2(0, -50);
+                        break;
+                    case Direction.Down:
+                         position += new Vector2(0, 50);
+                        break;
+                    case Direction.Left:
+                         position += new Vector2(-50, 0);
+                        break;
+                    case Direction.Right:
+                         position += new Vector2(50, 0);
+                        break;
+                }
+                
+            }
+
+            priorKeyboardState = keyboardState;
+
+
+            position.X = MathHelper.Clamp(position.X, borderMinX, borderMaxX);
+            position.Y = MathHelper.Clamp(position.Y, borderMinY, borderMaxY);
 
             // update the bounding box center
             bounds.X = position.X - 32;
             bounds.Y = position.Y - 32;
+            
         }
 
         /// <summary>
@@ -92,8 +147,11 @@ namespace Game_Project_0
             SpriteEffects spriteEffects = (flipped) ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             
             spriteBatch.Draw(texture, position, null, Color, 0, new Vector2(32, 32), 1f, spriteEffects, 0);
-            Rectangle rect = new ((int)bounds.X, (int)bounds.Y, (int)bounds.Width, (int)bounds.Height);
-            spriteBatch.Draw(hitbox, rect, Color.White);
+            // Rectangle rect = new ((int)bounds.X, (int)bounds.Y, (int)bounds.Width, (int)bounds.Height);
+            // spriteBatch.Draw(hitbox, rect, Color.White);
         }
+
+
+
     }
 }

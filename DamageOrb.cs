@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
+using CollisionExample.Collisions;
 
 namespace Game_Project_0
 {
@@ -29,18 +30,39 @@ namespace Game_Project_0
     public class DamageOrbSprite
     {
         private Texture2D texture;
+
+        private Texture2D hitbox;
         private double directionTimer;
-        private double animationTimer;
-        private short animationFrame = 1;
+
+        private BoudningCircle bounds; 
+        private int borderMinX = 0;
+        private int borderMinY = 0;
+        private int borderMaxX = 800;
+        private int borderMaxY = 480;
+
         /// <summary>
-        /// the direction of the bat
+        /// The boudning volume of the sprite
+        /// </summary>
+        public BoudningCircle Bounds => bounds;
+        /// <summary>
+        /// the direction of the orb
         /// </summary>
         public Direction Direction;
 
         /// <summary>
-        /// The position of the bat
+        /// The position of the orb
         /// </summary>
         public Vector2 Position;
+
+        /// <summary>
+        /// Creates a new gem sprite
+        /// </summary> 
+        /// <param name="position">The position of the sprite in the game</param>
+        public DamageOrbSprite(Vector2 position)
+        {
+            this.Position = position;
+            this.bounds = new BoudningCircle(position - new Vector2(-16, -16), 16);
+        }
 
         /// <summary>
         /// Loads the sprite texture using the provided ContentManager
@@ -49,6 +71,7 @@ namespace Game_Project_0
         public void LoadContent(ContentManager content)
         {
             texture = content.Load<Texture2D>("DamageOrb");
+            hitbox = content.Load<Texture2D>("32x32CircleHitBox");
         }
 
         /// <summary>
@@ -95,6 +118,10 @@ namespace Game_Project_0
                         break;                
             }
 
+            Position.X = MathHelper.Clamp(Position.X, borderMinX, borderMaxX);
+            Position.Y = MathHelper.Clamp(Position.Y, borderMinY, borderMaxY);
+            bounds.Center.X = Position.X + 16;
+            bounds.Center.Y = Position.Y + 16;
             
         }            
 
@@ -105,18 +132,13 @@ namespace Game_Project_0
         /// <param name="spriteBatch">The spritebatch to render with</param>
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {   
-            //update animation timer
-            animationTimer += gameTime.ElapsedGameTime.TotalSeconds;
             
-            //update animation frame
-            if (animationTimer > 0.3)
-            {
-                animationFrame++;
-                if(animationFrame > 3) animationFrame = 1;
-                animationTimer -= 0.3;
-            }
             var source = new Rectangle(0, 0, 32, 32);
             spriteBatch.Draw(texture, Position, source, Color.White);
+
+            // Rectangle rect = new ((int)(bounds.Center.X - bounds.Radius), (int)(bounds.Center.Y - bounds.Radius), (int)bounds.Radius*2, (int)bounds.Radius*2);
+            // spriteBatch.Draw(hitbox, rect, Color.White);
+            
         }
     }
 }
