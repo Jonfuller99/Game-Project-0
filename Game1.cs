@@ -8,6 +8,7 @@ namespace Game_Project_0;
 
 public enum GameState
 {
+    Start,
     Playing,
     Win,
     Lose
@@ -18,11 +19,12 @@ public class Game1 : Game
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
 
-    private GameState state = GameState.Playing;
+    private GameState state = GameState.Start;
 
     private JetSprite jet;
 
     private Texture2D background;
+    private Texture2D startScreen;
 
     private GemSprite [] gems;
 
@@ -101,6 +103,7 @@ public class Game1 : Game
         }
         bangers = Content.Load<SpriteFont>("bangers");
         background = Content.Load<Texture2D>("SunsetBackground");
+        startScreen = Content.Load<Texture2D>("SkyDashStartScreen");
     }
 
     protected override void Update(GameTime gameTime)
@@ -162,6 +165,10 @@ public class Game1 : Game
 
         switch (state)
         {
+            case GameState.Start:
+                _spriteBatch.Draw(startScreen, new Vector2(0,0), Color.White);
+                _spriteBatch.DrawString(bangers, $"Press ENTER to Start", new Vector2(200, 400 ), Color.Green);
+                break;
             case GameState.Playing:
                 _spriteBatch.Draw(background, new Vector2(0,0), Color.White);
                 foreach (var gem in gems) gem.Draw(gameTime, _spriteBatch);
