@@ -14,6 +14,7 @@ namespace Game_Project_0
     /// </summary>
     public class JetSprite
     {
+        private Game game;
         private GamePadState gamePadState;
 
         private KeyboardState keyboardState;
@@ -29,8 +30,8 @@ namespace Game_Project_0
         private Direction direction;
 
         private int borderMinX = 0;
-        private int borderMinY = 0;
-        private int borderMaxX = 800;
+        // private int borderMinY = 0;
+        // private int borderMaxX = 800;
         private int borderMaxY = 480;
         private Vector2 position = new Vector2(50, 430);
         
@@ -46,6 +47,12 @@ namespace Game_Project_0
         /// The color to blend with the ghost
         /// </summary>
         public Color Color {get; set;} = Color.White;
+
+
+        public JetSprite(Game game)
+        {
+            this.game = game;            
+        }
 
         /// <summary>
         /// Loads the sprite texture using the provided ContentManager
@@ -128,12 +135,19 @@ namespace Game_Project_0
             priorKeyboardState = keyboardState;
 
 
-            position.X = MathHelper.Clamp(position.X, borderMinX, borderMaxX);
-            position.Y = MathHelper.Clamp(position.Y, borderMinY, borderMaxY);
+            // position.X = MathHelper.Clamp(position.X, borderMinX, borderMaxX);
+            // position.Y = MathHelper.Clamp(position.Y, borderMinY, borderMaxY);
 
             // update the bounding box center
             bounds.X = position.X - 32;
             bounds.Y = position.Y - 32;
+
+            // Wrap the ship to keep it on-screen
+            var viewport = game.GraphicsDevice.Viewport;
+            if (position.Y < 0) position.Y = viewport.Height;
+            if (position.Y > viewport.Height) position.Y = 0;
+            if (position.X < 0) position.X = viewport.Width;
+            if (position.X > viewport.Width) position.X = 0;
             
         }
 

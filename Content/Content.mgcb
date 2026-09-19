@@ -73,6 +73,20 @@
 /processorParam:Version=3.8.5.1
 /build:File.spritefont;bangers.spritefont
 
+#begin gem_pickup.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/processorParam:Version=3.8.5.1
+/build:gem_pickup.mp3
+
+#begin hit.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/processorParam:Version=3.8.5.1
+/build:hit.mp3
+
 #begin Jet.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -85,6 +99,13 @@
 /processorParam:TextureFormat=Color
 /processorParam:Version=3.8.5.1
 /build:Jet.png
+
+#begin lose.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/processorParam:Version=3.8.5.1
+/build:lose.mp3
 
 #begin SkyDashStartScreen.png
 /importer:TextureImporter
@@ -111,4 +132,11 @@
 /processorParam:TextureFormat=Color
 /processorParam:Version=3.8.5.1
 /build:SunsetBackground.png
+
+#begin victory.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/processorParam:Version=3.8.5.1
+/build:victory.mp3
 

@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
+
 
 namespace Game_Project_0;
 
@@ -34,6 +36,11 @@ public class Game1 : Game
 
     private SpriteFont bangers;
 
+    public SoundEffect gemPickup;
+    public SoundEffect hit;
+    public SoundEffect victory;
+    public SoundEffect lose;
+
     private System.TimeSpan completionTime;
 
 
@@ -47,7 +54,7 @@ public class Game1 : Game
     protected override void Initialize()
     {
         // TODO: Add your initialization logic here
-        jet = new();
+        jet = new(this);
         SetupGame();
         base.Initialize();
     }
@@ -104,6 +111,13 @@ public class Game1 : Game
         bangers = Content.Load<SpriteFont>("bangers");
         background = Content.Load<Texture2D>("SunsetBackground");
         startScreen = Content.Load<Texture2D>("SkyDashStartScreen");
+
+        gemPickup = Content.Load<SoundEffect>("gem_pickup");
+        hit = Content.Load<SoundEffect>("hit");
+        victory = Content.Load<SoundEffect>("victory");
+        lose = Content.Load<SoundEffect>("lose");
+
+
     }
 
     protected override void Update(GameTime gameTime)
@@ -125,6 +139,7 @@ public class Game1 : Game
                     jet.Color = Color.Gold;
                     gem.Collected = true;
                     gemsLeft--;
+                    gemPickup.Play();
                     
                 }
             }
@@ -134,6 +149,7 @@ public class Game1 : Game
             {
                 state = GameState.Win;
                 completionTime = gameTime.TotalGameTime;
+                victory.Play();
             }
             
             foreach(var orb in orbs)
@@ -142,6 +158,8 @@ public class Game1 : Game
                 if (orb.Bounds.CollidesWith(jet.Bounds))
                 {
                     state = GameState.Lose;
+                    hit.Play();
+                    lose.Play();
                 }
             }
         }
@@ -180,12 +198,14 @@ public class Game1 : Game
                 break;
             case GameState.Win:
                 GraphicsDevice.Clear(Color.LightGray);
+                
                 _spriteBatch.DrawString(bangers, $"You win!", new Vector2(200,150 ), Color.Green);
                 _spriteBatch.DrawString(bangers, $"Your time: {completionTime:c}", new Vector2(200,200 ), Color.Black);
                 _spriteBatch.DrawString(bangers, $"Press ENTER to reset", new Vector2(200, 300 ), Color.Black);
                 break;
             case GameState.Lose:
                 GraphicsDevice.Clear(Color.LightGray);
+                
                 _spriteBatch.DrawString(bangers, $"Game Over! :(", new Vector2(200,200 ), Color.Red);
                 _spriteBatch.DrawString(bangers, $"Press ENTER to reset", new Vector2(200, 300 ), Color.Black);
                 break;
