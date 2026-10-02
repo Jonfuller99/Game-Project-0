@@ -20,3 +20,6 @@ Content/hit.mp3 - created by me, Jon Fuller for this project using FL Studio
 Content/lose.mp3g  - created by me, Jon Fuller for this project using FL Studio
 
 Content/victory.mp3 - created by me, Jon Fuller for this project using FL Studio
+
+
+Content/GameProject2 SoundTrack.mp3 - created by me, Jon Fuller for this project using FL Studio
