@@ -124,7 +124,7 @@ public class Game1 : Game
 
         backgroundMusic = Content.Load<Song>("GameProject2 SoundTrack");
         MediaPlayer.IsRepeating = true;
-
+        MediaPlayer.Volume = 0.50f; 
 
     }
 
