@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 
 
 namespace Game_Project_0;
@@ -40,6 +41,8 @@ public class Game1 : Game
     public SoundEffect hit;
     public SoundEffect victory;
     public SoundEffect lose;
+
+    private Song backgroundMusic;
 
     private System.TimeSpan completionTime;
 
@@ -94,6 +97,7 @@ public class Game1 : Game
         }
 
         state = GameState.Playing;
+        MediaPlayer.Play(backgroundMusic);
     }
 
     protected override void LoadContent()
@@ -116,6 +120,10 @@ public class Game1 : Game
         hit = Content.Load<SoundEffect>("hit");
         victory = Content.Load<SoundEffect>("victory");
         lose = Content.Load<SoundEffect>("lose");
+
+
+        backgroundMusic = Content.Load<Song>("GameProject2 SoundTrack");
+        MediaPlayer.IsRepeating = true;
 
 
     }
@@ -149,6 +157,7 @@ public class Game1 : Game
             {
                 state = GameState.Win;
                 completionTime = gameTime.TotalGameTime;
+                MediaPlayer.Stop();
                 victory.Play();
             }
             
@@ -158,6 +167,7 @@ public class Game1 : Game
                 if (orb.Bounds.CollidesWith(jet.Bounds))
                 {
                     state = GameState.Lose;
+                    MediaPlayer.Stop();
                     hit.Play();
                     lose.Play();
                 }
@@ -169,6 +179,7 @@ public class Game1 : Game
             {
                 ResetGame();
                 gameTime.TotalGameTime = new System.TimeSpan(0);
+                
             }
         }
 
